@@ -205,7 +205,6 @@ uint64 sys_clone(void) {
 uint64 sys_join(void) {
   return join();
 }
-<<<<<<< HEAD
 //eb
 uint64 sys_getpriority(void) {
     return myproc()->priority;
@@ -263,7 +262,6 @@ uint64 sys_signal(void) {
     return kkill(pid);
 }
 //endeb
-=======
 
 uint64 sys_myfork(void) { //custom system call implementation by Aditya Ekka
   int count = 0;
@@ -282,4 +280,3 @@ uint64 sys_myfork(void) { //custom system call implementation by Aditya Ekka
   }
   return kfork();
 }
->>>>>>> 8b3a5f4
