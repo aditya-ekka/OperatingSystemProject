@@ -43,3 +43,6 @@ entry("sbrk");
 entry("pause");
 entry("uptime");
 entry("getprocs");
+entry("sem_create");
+entry("sem_down");
+entry("sem_up");

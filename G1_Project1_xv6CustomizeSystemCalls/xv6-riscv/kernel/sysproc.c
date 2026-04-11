@@ -7,6 +7,16 @@
 #include "proc.h"
 #include "vm.h"
 
+
+
+#define NSEM 10 // Maximum number of active semaphores
+
+struct semaphore {
+  struct spinlock lock; // Protects the semaphore from race conditions
+  int value;            // The current count
+  int active;           // 1 if allocated, 0 if free
+} semaphores[NSEM];
+
 uint64
 sys_exit(void)
 {
@@ -112,4 +122,73 @@ uint64
 sys_getprocs(void)
 {
   return get_active_procs();
+}
+
+
+
+// CREATE A SEMAPHORE
+uint64
+sys_sem_create(void)
+{
+  int initial_val;
+
+  
+  argint(0, &initial_val);
+
+  if(initial_val < 0)
+    return -1;
+
+  for(int i = 0; i < NSEM; i++) {
+    if(semaphores[i].active == 0) {
+      initlock(&semaphores[i].lock, "semaphore");
+      semaphores[i].value = initial_val;
+      semaphores[i].active = 1;
+      return i;
+    }
+  }
+  return -1;
+}
+
+// DECREMENT (WAIT)
+uint64
+sys_sem_down(void)
+{
+  int id;
+
+  argint(0, &id);
+
+  if(id < 0 || id >= NSEM || semaphores[id].active == 0)
+    return -1;
+
+  acquire(&semaphores[id].lock);
+
+  while(semaphores[id].value == 0) {
+    sleep(&semaphores[id], &semaphores[id].lock);
+  }
+
+  semaphores[id].value--;
+
+  release(&semaphores[id].lock);
+  return 0;
+}
+
+// INCREMENT (SIGNAL)
+uint64
+sys_sem_up(void)
+{
+  int id;
+
+  argint(0, &id);
+
+  if(id < 0 || id >= NSEM || semaphores[id].active == 0)
+  return -1;
+
+  acquire(&semaphores[id].lock);
+  semaphores[id].value++;
+  
+  // Wake up any processes that are sleeping on this specific semaphore memory address
+  wakeup(&semaphores[id]); 
+  
+  release(&semaphores[id].lock);
+  return 0;
 }

@@ -102,7 +102,9 @@ extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_getprocs(void);
-
+extern uint64 sys_sem_create(void);
+extern uint64 sys_sem_down(void);
+extern uint64 sys_sem_up(void);
 
 
 // An array mapping syscall numbers from syscall.h
@@ -130,6 +132,9 @@ static uint64 (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_getprocs] sys_getprocs,
+[SYS_sem_create] sys_sem_create,
+[SYS_sem_down]   sys_sem_down,
+[SYS_sem_up]     sys_sem_up,
 };
 
 void
