@@ -25,6 +25,10 @@ char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
 int getprocs(void);
+int sem_create(int);
+int sem_down(int);
+int sem_up(int);
+
 
 // ulib.c
 int stat(const char*, struct stat*);
