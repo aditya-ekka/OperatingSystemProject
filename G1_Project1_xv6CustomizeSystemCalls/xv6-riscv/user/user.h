@@ -30,6 +30,12 @@ int sem_down(int);
 int sem_up(int);
 int clone(void*);
 int join(void);
+//eb
+int getpriority(void);
+int setpriority(int);
+int send(int, int);
+int recv(void);
+int signal(int);
 
 // ulib.c
 int stat(const char*, struct stat*);
