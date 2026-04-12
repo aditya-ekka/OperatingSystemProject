@@ -55,4 +55,5 @@ entry("recv");
 entry("signal");
 entry("myfork");
 # a new entry added for the custom myfork system call
+entry("getpinfo");
 

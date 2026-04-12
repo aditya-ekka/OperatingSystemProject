@@ -31,6 +31,7 @@
 #define SYS_send         30
 #define SYS_recv         31
 #define SYS_signal       32
+#define SYS_getpinfo     33
 
 
 #define SYS_myfork 28

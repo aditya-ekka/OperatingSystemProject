@@ -1,6 +1,7 @@
 #define SBRK_ERROR ((char *)-1)
 
 struct stat;
+struct pstat;
 
 // system calls
 int fork(void);
@@ -37,6 +38,7 @@ int recv(void);
 int signal(int);
 
 int myfork(void); // prototype for the custom myfork system call
+int getpinfo(struct pstat*);
 
 
 // ulib.c

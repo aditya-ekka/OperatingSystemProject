@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "defs.h"
 #include "vm.h"
+#include "pstat.h"
 
 extern struct proc proc[NPROC];
 
@@ -279,4 +280,33 @@ uint64 sys_myfork(void) { //custom system call implementation by Aditya Ekka
     return -1;
   }
   return kfork();
+}
+
+uint64 sys_getpinfo(void) {
+  uint64 pstat_addr;
+  struct pstat st;
+  struct proc *p;
+  int i = 0;
+
+  argaddr(0, &pstat_addr);
+
+  for(p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
+    if(p->state != UNUSED) {
+      st.inuse[i] = 1;
+      st.pid[i] = p->pid;
+      st.state[i] = p->state;
+      st.size[i] = p->sz;
+      safestrcpy(st.name[i], p->name, sizeof(p->name));
+      st.priority[i] = p->priority;
+    } else {
+      st.inuse[i] = 0;
+    }
+    i++;
+    release(&p->lock);
+  }
+
+  if(copyout(myproc()->pagetable, pstat_addr, (char *)&st, sizeof(st)) < 0)
+    return -1;
+  return 0;
 }
