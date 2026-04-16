@@ -115,8 +115,7 @@ extern uint64 sys_send(void);
 extern uint64 sys_recv(void);
 extern uint64 sys_signal(void);
 extern uint64 sys_getpinfo(void);
-extern uint64 sys_myfork(void);
-// prototype for the custom myfork system call
+extern uint64 sys_myfork(void); // prototype for the custom myfork system call
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -155,8 +154,7 @@ static uint64 (*syscalls[])(void) = {
 [SYS_recv] sys_recv,
 [SYS_signal] sys_signal,
 [SYS_getpinfo] sys_getpinfo,
-[SYS_myfork] sys_myfork,
-// custom system call added for myfork
+[SYS_myfork] sys_myfork, // custom system call added for myfork
 };
 
 void

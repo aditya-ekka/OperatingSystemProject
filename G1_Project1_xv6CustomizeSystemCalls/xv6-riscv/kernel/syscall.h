@@ -33,6 +33,4 @@
 #define SYS_signal       32
 #define SYS_getpinfo     33
 
-
-#define SYS_myfork 28
-// custom system call number for myfork
+#define SYS_myfork 34 // custom system call number for myfork
